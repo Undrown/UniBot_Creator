@@ -8,6 +8,7 @@ import kotlin.system.exitProcess
 class UniBot : JFrame() {
     private val globalListener = GlobalListener("")
     private var pixelTracer = PixelTracer()
+    private val log = LogFrame()
     private val mainPanel = Panel(GridLayout(3, 3).apply { hgap=10;vgap=20 })
     private val exitBtn = Button("Exit").apply {
         addActionListener {
@@ -18,12 +19,15 @@ class UniBot : JFrame() {
     private val popupOnButton = PopupMenu().apply {
         add(MenuItem("CheckPixel")).addActionListener {
             println("adding pixel checker...")
+            log.write("checker added.")
         }
         add(MenuItem("WaitPixel")).addActionListener {
             println("adding pixel listener (wait for pixel color)...")
+            log.write("waiter added.")
         }
         add(MenuItem("actionPerformer")).addActionListener {
             println("adding clicker/action-performer...")
+            log.write("action performer added.")
         }
     }
     private val addBtn = Button("Add...").apply {

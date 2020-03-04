@@ -11,6 +11,10 @@ class GlobalListener(val button:String) {
         stopQueued = false
         stopListener = ProcessBuilder(command).start()
         stopListenerTask = Timer().scheduleAtFixedRate(interval, interval){
+            if(stopListener == null){
+                stopQueued = true
+                this.cancel()
+            }
             try {
                 stopListener!!.exitValue()
                 stopQueued = true
