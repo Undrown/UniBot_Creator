@@ -1,11 +1,15 @@
 import java.awt.*
 import java.util.*
 import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JFrame
+import javax.swing.SwingUtilities
 import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.system.exitProcess
 
 class UniBot : JFrame() {
+    var winBounds = Bounds()
+    var frame:BindWindow? = null
     private val globalListener = GlobalListener("")
     private var pixelTracer = PixelTracer()
     private val log = LogFrame()
@@ -14,6 +18,17 @@ class UniBot : JFrame() {
         addActionListener {
             SystemTray.getSystemTray().remove(trayIcon)
             exitProcess(0)
+        }
+    }
+    private val bindBtn = Button("Bind pos...").apply {
+        addActionListener {
+            pixelTracer.isVisible = true
+            setDefaultLookAndFeelDecorated(true)
+            SwingUtilities.invokeLater {
+                frame = BindWindow()
+                frame!!.opacity = 0.55f
+                frame!!.isVisible = true;
+            }
         }
     }
     private val popupOnButton = PopupMenu().apply {
@@ -53,6 +68,7 @@ class UniBot : JFrame() {
         setLocationRelativeTo(null)
         add(mainPanel)
         with(mainPanel){
+            add(bindBtn)
             add(addBtn)
             add(exitBtn)
         }
@@ -71,6 +87,33 @@ class UniBot : JFrame() {
         trayIcon.popupMenu = popup
         trayIcon.addActionListener {
             isVisible = true
+        }
+    }
+
+    inner class Bounds{
+        var x = 0
+        var y = 0
+        var width = 0
+        var height = 0
+    }
+    inner class BindWindow:JFrame(){
+        private val button = JButton("OK").apply {
+            addActionListener {
+                winBounds.x = location.x
+                winBounds.y = location.y
+                winBounds.width = width
+                winBounds.height = height
+                frame!!.isVisible = false
+            }
+        }
+        init {
+            title = "Binder"
+            layout = GridBagLayout()
+            defaultCloseOperation = HIDE_ON_CLOSE
+            setSize(100, 100)
+            setLocationRelativeTo(null)
+            setLocation(100, 100)
+            add(button)
         }
     }
 }
