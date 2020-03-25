@@ -1,10 +1,9 @@
 import java.awt.*
-import java.util.*
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JFrame
+import javax.swing.JOptionPane.showInputDialog
 import javax.swing.SwingUtilities
-import kotlin.concurrent.scheduleAtFixedRate
 import kotlin.system.exitProcess
 
 class UniBot : JFrame() {
@@ -34,7 +33,15 @@ class UniBot : JFrame() {
     private val popupOnButton = PopupMenu().apply {
         add(MenuItem("CheckPixel")).addActionListener {
             println("adding pixel checker...")
-            log.write("checker added.")
+            val checker = PixelChecker(0, 0, Color.BLACK)
+            //ask for name
+            val name = showInputDialog(this@UniBot, null) as String
+            //ask for coord
+            val coordDialog = CoordDialog()
+            coordDialog.isVisible = true
+            //ask for color
+            checker.save(name)//serialize element
+            log.write("checker added. $name")
         }
         add(MenuItem("WaitPixel")).addActionListener {
             println("adding pixel listener (wait for pixel color)...")
@@ -104,6 +111,7 @@ class UniBot : JFrame() {
                 winBounds.width = width
                 winBounds.height = height
                 frame!!.isVisible = false
+                frame = null
             }
         }
         init {

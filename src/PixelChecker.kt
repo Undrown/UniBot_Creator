@@ -2,8 +2,8 @@ import java.awt.Color
 import java.awt.Robot
 import java.util.*
 
-class CheckPixel(private val pixelX:Int, private val pixelY: Int, private val pixelValue: Color) {
-    val r = Robot()
+class PixelChecker(private val pixelX:Int, private val pixelY: Int, private val pixelValue: Color) {
+    private val r = Robot()
     private val timeout = 10000L
     fun check():Boolean {
         return r.getPixelColor(pixelX, pixelY) == pixelValue
@@ -15,5 +15,9 @@ class CheckPixel(private val pixelX:Int, private val pixelY: Int, private val pi
                 return true
         }
         return false
+    }
+
+    fun save(name:String){
+        //save to file name.ubc
     }
 }
